@@ -1,3 +1,9 @@
+pplug-updater (0.22) bookworm; urgency=medium
+
+  * Use correct task and client types
+
+ -- Simon Long <simon@raspberrypi.com>  Wed, 12 Mar 2025 10:35:49 +0000
+
 pplug-updater (0.21) bookworm; urgency=medium
 
   * First hybrid package version

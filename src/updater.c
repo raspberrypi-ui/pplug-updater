@@ -66,7 +66,7 @@ static gpointer refresh_update_cache (gpointer data);
 static void refresh_cache_done (PkTask *task, GAsyncResult *res, gpointer data);
 static gboolean filter_fn (PkPackage *package, gpointer user_data);
 static gboolean filter_fn_x86 (PkPackage *package, gpointer);
-static void check_updates_done (PkTask *task, GAsyncResult *res, gpointer data);
+static void check_updates_done (PkClient *client, GAsyncResult *res, gpointer data);
 static void install_updates (GtkWidget *widget, gpointer user_data);
 static void launch_installer (void);
 static void show_updates (GtkWidget *widget, gpointer user_data);
@@ -117,7 +117,7 @@ static gpointer refresh_update_cache (gpointer data)
 {
     UpdaterPlugin *up = (UpdaterPlugin *) data;
     PkTask *task = pk_task_new ();
-    pk_client_refresh_cache_async (PK_CLIENT (task), TRUE, up->cancellable, NULL, NULL, (GAsyncReadyCallback) refresh_cache_done, data);
+    pk_task_refresh_cache_async (task, TRUE, up->cancellable, NULL, NULL, (GAsyncReadyCallback) refresh_cache_done, data);
     return NULL;
 }
 
@@ -163,13 +163,13 @@ static gboolean filter_fn_x86 (PkPackage *package, gpointer)
     return filter_fn (package, NULL);
 }
 
-static void check_updates_done (PkTask *task, GAsyncResult *res, gpointer data)
+static void check_updates_done (PkClient *client, GAsyncResult *res, gpointer data)
 {
     UpdaterPlugin *up = (UpdaterPlugin *) data;
     PkPackageSack *sack = NULL, *fsack;
 
     GError *error = NULL;
-    PkResults *results = pk_task_generic_finish (task, res, &error);
+    PkResults *results = pk_client_generic_finish (client, res, &error);
 
     if (error != NULL)
     {
