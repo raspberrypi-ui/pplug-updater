@@ -1,3 +1,9 @@
+pplug-updater (0.23) bookworm; urgency=medium
+
+  * Set initial state of icon correctly
+
+ -- Simon Long <simon@raspberrypi.com>  Mon, 07 Apr 2025 14:09:45 +0100
+
 pplug-updater (0.22) bookworm; urgency=medium
 
   * Use correct task and client types

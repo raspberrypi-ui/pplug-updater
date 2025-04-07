@@ -1,5 +1,5 @@
 /*============================================================================
-Copyright (c) 2021-2025 Raspberry Pi Holdings Ltd.
+Copyright (c) 2021-2025 Raspberry Pi
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -462,9 +462,6 @@ void updater_init (UpdaterPlugin *up)
     /* Start timed events to monitor status */
     updater_set_interval (up);
     up->idle_timer = g_idle_add (init_check, up);
-
-    /* Show the widget and return. */
-    gtk_widget_show_all (up->plugin);
 }
 
 void updater_destructor (gpointer user_data)
