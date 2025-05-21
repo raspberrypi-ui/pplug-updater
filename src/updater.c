@@ -56,6 +56,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 /* Global data                                                                */
 /*----------------------------------------------------------------------------*/
 
+conf_table_t conf_table[2] = {
+    {CONF_TYPE_INT,  "interval", N_("Hours between checks for updates"),    NULL},
+    {CONF_TYPE_NONE, NULL,       NULL,                                      NULL}
+};
+
 /*----------------------------------------------------------------------------*/
 /* Prototypes                                                                 */
 /*----------------------------------------------------------------------------*/
@@ -493,8 +498,12 @@ static GtkWidget *updater_constructor (LXPanel *panel, config_setting_t *setting
     up->plugin = gtk_button_new ();
     lxpanel_plugin_set_data (up->plugin, up, updater_destructor);
 
+    /* Set config defaults */
+    up->interval = 24;
+
     /* Read config */
-    if (!config_setting_lookup_int (up->settings, "Interval", &up->interval)) up->interval = 24;
+    conf_table[0].value = (void *) &up->interval;
+    lxplug_read_settings (up->settings, conf_table);
 
     updater_init (up);
 
@@ -533,7 +542,7 @@ static gboolean updater_apply_configuration (gpointer user_data)
 {
     UpdaterPlugin *up = lxpanel_plugin_get_data (GTK_WIDGET (user_data));
 
-    config_group_set_int (up->settings, "Interval", up->interval);
+    lxplug_write_settings (up->settings, conf_table);
 
     updater_set_interval (up);
     return FALSE;
@@ -542,19 +551,16 @@ static gboolean updater_apply_configuration (gpointer user_data)
 /* Display configuration dialog */
 static GtkWidget *updater_configure (LXPanel *panel, GtkWidget *plugin)
 {
-    UpdaterPlugin *up = lxpanel_plugin_get_data (plugin);
-
-    return lxpanel_generic_config_dlg(_("Updater"), panel,
+    return lxpanel_generic_config_dlg_new (_(PLUGIN_TITLE), panel,
         updater_apply_configuration, plugin,
-        _("Hours between checks for updates"), &up->interval, CONF_TYPE_INT,
-        NULL);
+        conf_table);
 }
 
 FM_DEFINE_MODULE (lxpanel_gtk, updater)
 
 /* Plugin descriptor */
 LXPanelPluginInit fm_module_init_lxpanel_gtk = {
-    .name = N_("Updater"),
+    .name = N_(PLUGIN_TITLE),
     .description = N_("Checks for updates"),
     .new_instance = updater_constructor,
     .reconfigure = updater_configuration_changed,

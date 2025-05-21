@@ -33,19 +33,9 @@ extern "C" {
     WayfireWidget *create () { return new WayfireUpdater; }
     void destroy (WayfireWidget *w) { delete w; }
 
-    static constexpr conf_table_t conf_table[2] = {
-        {CONF_INT,  "interval", N_("Hours between checks for updates")},
-        {CONF_NONE, NULL,       NULL}
-    };
     const conf_table_t *config_params (void) { return conf_table; };
-    const char *display_name (void) { return N_("Updater"); };
+    const char *display_name (void) { return N_(PLUGIN_TITLE); };
     const char *package_name (void) { return GETTEXT_PACKAGE; };
-}
-
-void WayfireUpdater::bar_pos_changed_cb (void)
-{
-    if ((std::string) bar_pos == "bottom") up->bottom = TRUE;
-    else up->bottom = FALSE;
 }
 
 void WayfireUpdater::icon_size_changed_cb (void)
@@ -83,7 +73,6 @@ void WayfireUpdater::init (Gtk::HBox *container)
     up->plugin = (GtkWidget *)((*plugin).gobj());
     up->icon_size = icon_size;
     icon_timer = Glib::signal_idle().connect (sigc::mem_fun (*this, &WayfireUpdater::set_icon));
-    bar_pos_changed_cb ();
 
     /* Add long press for right click */
     gesture = add_longpress_default (*plugin);
@@ -93,7 +82,6 @@ void WayfireUpdater::init (Gtk::HBox *container)
 
     /* Setup callbacks */
     icon_size.set_callback (sigc::mem_fun (*this, &WayfireUpdater::icon_size_changed_cb));
-    bar_pos.set_callback (sigc::mem_fun (*this, &WayfireUpdater::bar_pos_changed_cb));
 
     interval.set_callback (sigc::mem_fun (*this, &WayfireUpdater::settings_changed_cb));
 }
