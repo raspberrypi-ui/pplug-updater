@@ -42,7 +42,6 @@ class WayfireUpdater : public WayfireWidget
     std::unique_ptr <Gtk::Button> plugin;
     Glib::RefPtr<Gtk::GestureLongPress> gesture;
 
-    WfOption <int> icon_size {"panel/icon_size"};
     sigc::connection icon_timer;
 
     WfOption <int> interval {"panel/updater_interval"};
@@ -55,8 +54,8 @@ class WayfireUpdater : public WayfireWidget
     void init (Gtk::HBox *container) override;
     void command (const char *cmd) override;
     virtual ~WayfireUpdater ();
-    void icon_size_changed_cb (void);
     bool set_icon (void);
+    void read_settings (void);
     void settings_changed_cb (void);
 };
 

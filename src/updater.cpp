@@ -38,12 +38,6 @@ extern "C" {
     const char *package_name (void) { return GETTEXT_PACKAGE; };
 }
 
-void WayfireUpdater::icon_size_changed_cb (void)
-{
-    up->icon_size = icon_size;
-    updater_update_display (up);
-}
-
 void WayfireUpdater::command (const char *cmd)
 {
     updater_control_msg (up, cmd);
@@ -55,9 +49,14 @@ bool WayfireUpdater::set_icon (void)
     return false;
 }
 
-void WayfireUpdater::settings_changed_cb (void)
+void WayfireUpdater::read_settings (void)
 {
     up->interval = interval;
+}
+
+void WayfireUpdater::settings_changed_cb (void)
+{
+    read_settings ();
     updater_set_interval (up);
 }
 
@@ -71,18 +70,16 @@ void WayfireUpdater::init (Gtk::HBox *container)
     /* Setup structure */
     up = g_new0 (UpdaterPlugin, 1);
     up->plugin = (GtkWidget *)((*plugin).gobj());
-    up->icon_size = icon_size;
     icon_timer = Glib::signal_idle().connect (sigc::mem_fun (*this, &WayfireUpdater::set_icon));
 
     /* Add long press for right click */
     gesture = add_longpress_default (*plugin);
 
     /* Initialise the plugin */
+    read_settings ();
     updater_init (up);
 
     /* Setup callbacks */
-    icon_size.set_callback (sigc::mem_fun (*this, &WayfireUpdater::icon_size_changed_cb));
-
     interval.set_callback (sigc::mem_fun (*this, &WayfireUpdater::settings_changed_cb));
 }
 
