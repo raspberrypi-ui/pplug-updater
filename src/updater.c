@@ -195,7 +195,7 @@ static void check_updates_done (PkClient *client, GAsyncResult *res, gpointer da
     {
         DEBUG ("Check complete - %d updates available", up->n_updates);
         up->ids = pk_package_sack_get_ids (fsack);
-        lxpanel_notify (up->panel, _("Updates are available\nClick the update icon to install"));
+        wrap_notify (up->panel, _("Updates are available\nClick the update icon to install"));
     }
     else
     {
