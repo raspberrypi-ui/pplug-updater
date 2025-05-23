@@ -1,14 +1,14 @@
-# English translations for wf-panel-pi package.
-# Copyright (C) 2024 Raspberry Pi Ltd
+# English translations for plugin package.
+# Copyright (C) 2025 Raspberry Pi
 # This file is distributed under the same license as the wf-panel-pi package.
-# Simon Long <simon@raspberrypi.com>, 2024.
+# Simon Long <simon@raspberrypi.com>, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-20 07:54+0000\n"
-"PO-Revision-Date: 2017-03-06 14:18+0000\n"
+"POT-Creation-Date: 2025-05-23 10:36+0100\n"
+"PO-Revision-Date: 2025-05-23 10:36+0100\n"
 "Last-Translator: Simon Long <simon@raspberrypi.com>\n"
 "Language-Team: English (British)\n"
 "Language: en_GB\n"
@@ -17,7 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/updater.c:192
+#: ../src/updater.c:60
+msgid "Hours between checks for updates"
+msgstr "Hours between Checks for Updates"
+
+#: ../src/updater.c:198
 msgid ""
 "Updates are available\n"
 "Click the update icon to install"
@@ -25,32 +29,26 @@ msgstr ""
 "Updates are available\n"
 "Click the update icon to install"
 
-#: ../src/updater.c:309
+#: ../src/updater.c:315
 msgid "Show Updates..."
 msgstr "Show Updates..."
 
-#: ../src/updater.c:314
+#: ../src/updater.c:320
 msgid "Install Updates"
 msgstr "Install Updates"
 
-#: ../src/updater.c:446
+#: ../src/updater.c:452
 msgid "Updates are available - click to install"
 msgstr "Updates are available - click to install"
 
-#: ../src/updater.c:565 ../src/updater.c:575 ../src/updater.cpp:40
-msgid "Updater"
-msgstr "Updater"
-
-#: ../src/updater.c:567 ../src/updater.cpp:36
-msgid "Hours between checks for updates"
-msgstr "Hours between checks for updates"
-
-#: ../src/updater.c:576
+#: ../src/updater.c:565
 msgid "Checks for updates"
 msgstr "Checks for updates"
 
-#. End of file
-#. ----------------------------------------------------------------------------
+#: ../src/updater.h:32
+msgid "Updater"
+msgstr "Updater"
+
 #: ../data/lxplug-updater.ui.h:1
 msgid "Available Updates"
 msgstr "Available Updates"
