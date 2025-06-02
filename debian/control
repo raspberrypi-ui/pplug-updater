@@ -14,7 +14,7 @@ Homepage: http://raspberrypi.com/
 Package: lxplug-updater
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
- lxpanel-pi,
+ lxpanel-pi, pplug-updater-data,
  raspi-config, gui-updater
 Description: Updater plugin for lxpanel
  Plugin for lxpanel to check for and install updates.
@@ -22,7 +22,13 @@ Description: Updater plugin for lxpanel
 Package: wfplug-updater
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
- wf-panel-pi (>=0.92),
+ wf-panel-pi (>=0.92), pplug-updater-data,
  raspi-config, gui-updater
 Description: Updater plugin for wf-panel-pi
  Plugin for wf-panel-pi to check for and install updates.
+
+Package: pplug-updater-data
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+Description: Updater plugin - data
+ Data for updater plugin
