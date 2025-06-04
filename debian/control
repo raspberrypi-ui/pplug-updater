@@ -5,7 +5,7 @@ Maintainer: Simon Long <simon@raspberrypi.com>
 Build-Depends:
  debhelper-compat (= 13), meson,
  libgtk-3-dev (>= 3.24), libgtkmm-3.0-dev (>= 3.24),
- lxpanel-pi-dev, wf-panel-pi-dev (>=0.92),
+ lxpanel-pi-dev, wf-panel-pi-dev (>=1.0),
  libgtk-layer-shell-dev (>= 0.6.0), libglm-dev,
  libpackagekit-glib2-dev
 Standards-Version: 4.5.1
@@ -22,13 +22,13 @@ Description: Updater plugin for lxpanel
 Package: wfplug-updater
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
- wf-panel-pi (>=0.92), pplug-updater-data,
+ wf-panel-pi (>=1.0), pplug-updater-data,
  raspi-config, gui-updater
 Description: Updater plugin for wf-panel-pi
  Plugin for wf-panel-pi to check for and install updates.
 
 Package: pplug-updater-data
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends},
+Depends: ${shlibs:Depends}, ${misc:Depends}, gtk-update-icon-cache
 Description: Updater plugin - data
  Data for updater plugin
