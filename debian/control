@@ -11,13 +11,13 @@ Build-Depends:
 Standards-Version: 4.5.1
 Homepage: http://raspberrypi.com/
 
-Package: lxplug-updater
+Package: lpplug-updater
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
  lxpanel-pi, pplug-updater-data,
  raspi-config, gui-updater
-Description: Updater plugin for lxpanel
- Plugin for lxpanel to check for and install updates.
+Description: Updater plugin for lxpanel-pi
+ Plugin for lxpanel-pi to check for and install updates.
 
 Package: wfplug-updater
 Architecture: any
