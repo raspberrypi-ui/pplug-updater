@@ -1,0 +1,3 @@
+usr/lib/${DEB_HOST_MULTIARCH}/lxpanel-pi/updater.so
+usr/share/lxpanel-pi/ui/lxplug-updater.ui
+usr/share/locale/*/LC_MESSAGES/lpplug_updater.mo
