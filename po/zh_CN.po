@@ -1,0 +1,70 @@
+# English translations for wf-panel-pi package.
+# Copyright (C) 2024 Raspberry Pi Ltd
+# This file is distributed under the same license as the wf-panel-pi package.
+# Simon Long <simon@raspberrypi.com>, 2024.
+# ykla <yklaxds@gmail>, 2025
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-20 07:54+0000\n"
+"PO-Revision-Date: 2025-08-23 15:02+0800\n"
+"Last-Translator: ykla <yklaxds@gmail.com>\n"
+"Language-Team: ykla <yklaxds@gmail.com>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.7\n"
+
+#: ../src/updater.c:192
+msgid ""
+"Updates are available\n"
+"Click the update icon to install"
+msgstr ""
+"有更新可用\n"
+"点击更新图标安装"
+
+#: ../src/updater.c:309
+msgid "Show Updates..."
+msgstr "显示更新……"
+
+#: ../src/updater.c:314
+msgid "Install Updates"
+msgstr "安装更新"
+
+#: ../src/updater.c:446
+msgid "Updates are available - click to install"
+msgstr "有更新可用——点击安装"
+
+#: ../src/updater.c:565 ../src/updater.c:575 ../src/updater.cpp:40
+msgid "Updater"
+msgstr "更新器"
+
+#: ../src/updater.c:567 ../src/updater.cpp:36
+msgid "Hours between checks for updates"
+msgstr "检查更新的时间间隔"
+
+#: ../src/updater.c:576
+msgid "Checks for updates"
+msgstr "检查更新"
+
+#. End of file
+#. ----------------------------------------------------------------------------
+#: ../data/lxplug-updater.ui.h:1
+msgid "Available Updates"
+msgstr "更新可用"
+
+#: ../data/lxplug-updater.ui.h:2
+msgid "Close"
+msgstr "退出"
+
+#: ../data/lxplug-updater.ui.h:3
+msgid "Install"
+msgstr "安装"
+
+#: ../data/lxplug-updater.ui.h:4
+msgid "The following packages can be updated :"
+msgstr "将更新以下软件包："
