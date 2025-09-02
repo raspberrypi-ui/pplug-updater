@@ -1,3 +1,9 @@
+pplug-updater (1.1) trixie; urgency=medium
+
+  * Add Chinese translation
+
+ -- Simon Long <simon@raspberrypi.com>  Tue, 02 Sep 2025 09:08:34 +0100
+
 pplug-updater (1.0) trixie; urgency=medium
 
   * Modify for lxpanel-pi
