@@ -44,7 +44,7 @@ class WayfireUpdater : public WayfireWidget
 
     sigc::connection icon_timer;
 
-    WfOption <int> interval {"panel/updater_interval"};
+    WfOption <int> interval {"updater/interval"};
 
     /* plugin */
     UpdaterPlugin *up;

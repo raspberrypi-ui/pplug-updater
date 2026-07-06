@@ -1,13 +1,10 @@
 <?xml version="1.0"?>
 <wf-panel-pi>
-	<plugin name="panel">
-	<_short>Panel</_short>
+  <plugin name="updater">
 	<group>
-	<_short>Updater</_short>
-	<option name="updater_interval" type="int">
-		<_short>Updater Interval Between Checks In Hours</_short>
+	  <option name="interval" type="int">
 		<default>24</default>
-	</option>
-	</group>
-	</plugin>
+	  </option>
+    </group>
+  </plugin>
 </wf-panel-pi>
