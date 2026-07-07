@@ -455,6 +455,7 @@ void updater_init (UpdaterPlugin *up)
     gtk_button_set_relief (GTK_BUTTON (up->plugin), GTK_RELIEF_NONE);
 #ifndef LXPLUG
     g_signal_connect (up->plugin, "clicked", G_CALLBACK (updater_button_clicked), up);
+    add_long_press (up->plugin, NULL, NULL);
 #endif
 
     /* Set up variables */
