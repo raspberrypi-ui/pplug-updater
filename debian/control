@@ -22,7 +22,7 @@ Description: Updater plugin for lxpanel-pi
 Package: wfplug-updater
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
- wf-panel-pi (>=1.10), pplug-updater-data,
+ wf-panel-pi (>=1.18), pplug-updater-data,
  raspi-config, gui-updater
 Description: Updater plugin for wf-panel-pi
  Plugin for wf-panel-pi to check for and install updates.

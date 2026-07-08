@@ -1,3 +1,9 @@
+pplug-updater (1.6) trixie; urgency=medium
+
+  * New XML
+
+ -- Simon Long <simon@raspberrypi.com>  Wed, 08 Jul 2026 13:53:52 +0100
+
 pplug-updater (1.5) trixie; urgency=medium
 
   * Add Polish translation
