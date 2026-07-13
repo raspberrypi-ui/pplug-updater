@@ -29,37 +29,37 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "updater.hpp"
 
 extern "C" {
-    WayfireWidget *create () { return new WayfireUpdater; }
-    void destroy (WayfireWidget *w) { delete w; }
+    PanelWidget *create () { return new WidgetUpdater; }
+    void destroy (PanelWidget *w) { delete w; }
 
     const conf_table_t *config_params (void) { return conf_table; };
     const char *display_name (void) { return PLUGIN_TITLE; };
     const char *package_name (void) { return GETTEXT_PACKAGE; };
 }
 
-void WayfireUpdater::command (const char *cmd)
+void WidgetUpdater::command (const char *cmd)
 {
     updater_control_msg (up, cmd);
 }
 
-bool WayfireUpdater::set_icon (void)
+bool WidgetUpdater::set_icon (void)
 {
     updater_update_display (up);
     return false;
 }
 
-void WayfireUpdater::read_settings (void)
+void WidgetUpdater::read_settings (void)
 {
     up->interval = interval;
 }
 
-void WayfireUpdater::settings_changed_cb (void)
+void WidgetUpdater::settings_changed_cb (void)
 {
     read_settings ();
     updater_set_interval (up);
 }
 
-void WayfireUpdater::init (Gtk::HBox *container)
+void WidgetUpdater::init (Gtk::HBox *container)
 {
     /* Create the button */
     plugin = std::make_unique <Gtk::Button> ();
@@ -69,17 +69,17 @@ void WayfireUpdater::init (Gtk::HBox *container)
     /* Setup structure */
     up = g_new0 (UpdaterPlugin, 1);
     up->plugin = (GtkWidget *)((*plugin).gobj());
-    icon_timer = Glib::signal_idle().connect (sigc::mem_fun (*this, &WayfireUpdater::set_icon));
+    icon_timer = Glib::signal_idle().connect (sigc::mem_fun (*this, &WidgetUpdater::set_icon));
 
     /* Initialise the plugin */
     read_settings ();
     updater_init (up);
 
     /* Setup callbacks */
-    interval.set_callback (sigc::mem_fun (*this, &WayfireUpdater::settings_changed_cb));
+    interval.set_callback (sigc::mem_fun (*this, &WidgetUpdater::settings_changed_cb));
 }
 
-WayfireUpdater::~WayfireUpdater()
+WidgetUpdater::~WidgetUpdater()
 {
     icon_timer.disconnect ();
     updater_destructor (up);

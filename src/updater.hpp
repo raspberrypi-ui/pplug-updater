@@ -36,7 +36,7 @@ extern "C" {
 #include "updater.h"
 }
 
-class WayfireUpdater : public WayfireWidget
+class WidgetUpdater : public PanelWidget
 {
     std::unique_ptr <Gtk::Button> plugin;
 
@@ -51,7 +51,7 @@ class WayfireUpdater : public WayfireWidget
 
     void init (Gtk::HBox *container) override;
     void command (const char *cmd) override;
-    virtual ~WayfireUpdater ();
+    virtual ~WidgetUpdater ();
     bool set_icon (void);
     void read_settings (void);
     void settings_changed_cb (void);
