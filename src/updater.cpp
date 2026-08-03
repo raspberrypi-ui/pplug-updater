@@ -50,12 +50,15 @@ bool WidgetUpdater::set_icon (void)
 
 void WidgetUpdater::read_settings (void)
 {
-    up->interval = interval;
+    conf_table[0].value = (void *) &up->interval;
+
+    load_configuration_data (PLUGIN_NAME, conf_table);
 }
 
-void WidgetUpdater::settings_changed_cb (void)
+void WidgetUpdater::handle_config_reload (void)
 {
-    read_settings ();
+    load_configuration_data (PLUGIN_NAME, conf_table);
+
     updater_set_interval (up);
 }
 
@@ -74,9 +77,6 @@ void WidgetUpdater::init (Gtk::HBox *container)
     /* Initialise the plugin */
     read_settings ();
     updater_init (up);
-
-    /* Setup callbacks */
-    interval.set_callback (sigc::mem_fun (*this, &WidgetUpdater::settings_changed_cb));
 }
 
 WidgetUpdater::~WidgetUpdater()

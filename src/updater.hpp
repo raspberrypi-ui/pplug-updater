@@ -42,8 +42,6 @@ class WidgetUpdater : public PanelWidget
 
     sigc::connection icon_timer;
 
-    WfOption <int> interval {"updater/interval"};
-
     /* plugin */
     UpdaterPlugin *up;
 
@@ -54,7 +52,7 @@ class WidgetUpdater : public PanelWidget
     virtual ~WidgetUpdater ();
     bool set_icon (void);
     void read_settings (void);
-    void settings_changed_cb (void);
+    void handle_config_reload (void);
 };
 
 #endif /* end of include guard: WIDGETS_UPDATER_HPP */
