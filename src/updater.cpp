@@ -48,18 +48,9 @@ bool WidgetUpdater::set_icon (void)
     return false;
 }
 
-void WidgetUpdater::read_settings (void)
-{
-    conf_table[0].value = (void *) &up->interval;
-
-    load_configuration_data (PLUGIN_NAME, conf_table);
-}
-
 void WidgetUpdater::handle_config_reload (void)
 {
-    load_configuration_data (PLUGIN_NAME, conf_table);
-
-    updater_set_interval (up);
+    if (load_configuration_data (PLUGIN_NAME, conf_table)) updater_set_interval (up);
 }
 
 void WidgetUpdater::init (Gtk::HBox *container)
@@ -75,7 +66,8 @@ void WidgetUpdater::init (Gtk::HBox *container)
     icon_timer = Glib::signal_idle().connect (sigc::mem_fun (*this, &WidgetUpdater::set_icon));
 
     /* Initialise the plugin */
-    read_settings ();
+    updater_set_values (up);
+    load_configuration_data (PLUGIN_NAME, conf_table);
     updater_init (up);
 }
 

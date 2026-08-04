@@ -60,6 +60,7 @@ extern conf_table_t conf_table[2];
 /*----------------------------------------------------------------------------*/
 
 extern void updater_init (UpdaterPlugin *up);
+extern void updater_set_values (UpdaterPlugin *up);
 extern void updater_update_display (UpdaterPlugin *up);
 extern void updater_set_interval (UpdaterPlugin *up);
 extern gboolean updater_control_msg (UpdaterPlugin *up, const char *cmd);

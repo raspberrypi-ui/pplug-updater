@@ -416,6 +416,11 @@ void updater_update_display (UpdaterPlugin *up)
     wrap_set_taskbar_icon (up, up->tray_icon, "update-avail");
 }
 
+void updater_set_values (UpdaterPlugin *up)
+{
+    conf_table[0].value = (void *) &up->interval;
+}
+
 /* Handler for control message */
 gboolean updater_control_msg (UpdaterPlugin *up, const char *cmd)
 {
@@ -503,11 +508,8 @@ static GtkWidget *updater_constructor (LXPanel *panel, config_setting_t *setting
     up->plugin = gtk_button_new ();
     lxpanel_plugin_set_data (up->plugin, up, updater_destructor);
 
-    /* Set config defaults */
-    up->interval = 24;
-
     /* Read config */
-    conf_table[0].value = (void *) &up->interval;
+    updater_set_values (up);
     lxplug_read_settings (up->settings, conf_table);
 
     updater_init (up);
