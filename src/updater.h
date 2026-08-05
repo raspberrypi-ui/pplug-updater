@@ -51,6 +51,8 @@ typedef struct
     guint timer;                    /* Periodic check timer ID */
     guint idle_timer;
     GCancellable *cancellable;
+    gboolean checking;
+    gboolean destroyed;
 } UpdaterPlugin;
 
 extern conf_table_t conf_table[2];

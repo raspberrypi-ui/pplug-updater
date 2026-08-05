@@ -66,6 +66,7 @@ conf_table_t conf_table[2] = {
 /*----------------------------------------------------------------------------*/
 
 static gboolean net_available (void);
+static void check_destroyed (UpdaterPlugin *up);
 static void check_for_updates (gpointer user_data);
 static gpointer refresh_update_cache (gpointer data);
 static void refresh_cache_done (PkTask *task, GAsyncResult *res, gpointer data);
@@ -100,6 +101,12 @@ static gboolean net_available (void)
     else return FALSE;
 }
 
+static void check_destroyed (UpdaterPlugin *up)
+{
+    up->checking = FALSE;
+    if (up->destroyed) g_free (up);
+}
+
 /*----------------------------------------------------------------------------*/
 /* Handlers for PackageKit asynchronous check for updates                     */
 /*----------------------------------------------------------------------------*/
@@ -113,6 +120,9 @@ static void check_for_updates (gpointer user_data)
         DEBUG ("No network connection - update check failed");
         return;
     }
+
+    if (up->checking) return;
+    up->checking = TRUE;
 
     DEBUG ("Checking for updates");
     g_thread_new (NULL, refresh_update_cache, up);
@@ -129,6 +139,13 @@ static gpointer refresh_update_cache (gpointer data)
 static void refresh_cache_done (PkTask *task, GAsyncResult *res, gpointer data)
 {
     UpdaterPlugin *up = (UpdaterPlugin *) data;
+
+    if (up->destroyed)
+    {
+        g_free (up);
+        return;
+    }
+
     GError *error = NULL;
     pk_task_generic_finish (task, res, &error);
 
@@ -136,6 +153,7 @@ static void refresh_cache_done (PkTask *task, GAsyncResult *res, gpointer data)
     {
         DEBUG ("Error updating cache - %s", error->message);
         g_error_free (error);
+        check_destroyed (up);
         return;
     }
 
@@ -173,6 +191,12 @@ static void check_updates_done (PkClient *client, GAsyncResult *res, gpointer da
     UpdaterPlugin *up = (UpdaterPlugin *) data;
     PkPackageSack *sack = NULL, *fsack;
 
+    if (up->destroyed)
+    {
+        g_free (up);
+        return;
+    }
+
     GError *error = NULL;
     PkResults *results = pk_client_generic_finish (client, res, &error);
 
@@ -180,6 +204,7 @@ static void check_updates_done (PkClient *client, GAsyncResult *res, gpointer da
     {
         DEBUG ("Error comparing versions - %s", error->message);
         g_error_free (error);
+        check_destroyed (up);
         return;
     }
 
@@ -206,6 +231,7 @@ static void check_updates_done (PkClient *client, GAsyncResult *res, gpointer da
 
     if (sack) g_object_unref (sack);
     g_object_unref (fsack);
+    check_destroyed (up);
 }
 
 
@@ -469,6 +495,8 @@ void updater_init (UpdaterPlugin *up)
     up->n_updates = 0;
     up->ids = NULL;
     up->cancellable = g_cancellable_new ();
+    up->checking = FALSE;
+    up->destroyed = FALSE;
 
     /* Start timed events to monitor status */
     updater_set_interval (up);
@@ -483,12 +511,13 @@ void updater_destructor (gpointer user_data)
     if (up->gesture) g_object_unref (up->gesture);
 #endif
 
+    up->destroyed = TRUE;
     g_cancellable_cancel (up->cancellable);
     if (up->timer) g_source_remove (up->timer);
     if (up->idle_timer) g_source_remove (up->idle_timer);
 
-    /* Deallocate memory */
-    g_free (up);
+    /* Deallocate memory if not waiting for a process to finish */
+    if (!up->checking) g_free (up);
 }
 
 /*----------------------------------------------------------------------------*/
