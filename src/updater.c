@@ -104,7 +104,11 @@ static gboolean net_available (void)
 static void check_destroyed (UpdaterPlugin *up)
 {
     up->checking = FALSE;
-    if (up->destroyed) g_free (up);
+    if (up->destroyed)
+    {
+        g_object_unref (up->cancellable);
+        g_free (up);
+    }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,6 +146,8 @@ static void refresh_cache_done (PkTask *task, GAsyncResult *res, gpointer data)
 
     if (up->destroyed)
     {
+        g_object_unref (task);
+        g_object_unref (up->cancellable);
         g_free (up);
         return;
     }
@@ -153,6 +159,7 @@ static void refresh_cache_done (PkTask *task, GAsyncResult *res, gpointer data)
     {
         DEBUG ("Error updating cache - %s", error->message);
         g_error_free (error);
+        g_object_unref (task);
         check_destroyed (up);
         return;
     }
@@ -193,6 +200,8 @@ static void check_updates_done (PkClient *client, GAsyncResult *res, gpointer da
 
     if (up->destroyed)
     {
+        g_object_unref (client);
+        g_object_unref (up->cancellable);
         g_free (up);
         return;
     }
@@ -204,6 +213,7 @@ static void check_updates_done (PkClient *client, GAsyncResult *res, gpointer da
     {
         DEBUG ("Error comparing versions - %s", error->message);
         g_error_free (error);
+        g_object_unref (client);
         check_destroyed (up);
         return;
     }
@@ -231,6 +241,8 @@ static void check_updates_done (PkClient *client, GAsyncResult *res, gpointer da
 
     if (sack) g_object_unref (sack);
     g_object_unref (fsack);
+    g_object_unref (results);
+    g_object_unref (client);
     check_destroyed (up);
 }
 
@@ -517,7 +529,11 @@ void updater_destructor (gpointer user_data)
     if (up->idle_timer) g_source_remove (up->idle_timer);
 
     /* Deallocate memory if not waiting for a process to finish */
-    if (!up->checking) g_free (up);
+    if (!up->checking)
+    {
+        g_object_unref (up->cancellable);
+        g_free (up);
+    }
 }
 
 /*----------------------------------------------------------------------------*/
