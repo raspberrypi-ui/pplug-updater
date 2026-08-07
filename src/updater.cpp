@@ -37,23 +37,22 @@ extern "C" {
     const char *package_name (void) { return GETTEXT_PACKAGE; };
 }
 
-void WidgetUpdater::command (const char *cmd)
+void WidgetUpdater::widget_command (const char *cmd)
 {
     updater_control_msg (up, cmd);
 }
 
-bool WidgetUpdater::set_icon (void)
+void WidgetUpdater::widget_set_icon (void)
 {
     updater_update_display (up);
-    return false;
 }
 
-void WidgetUpdater::handle_config_reload (void)
+void WidgetUpdater::widget_config_reload (void)
 {
     if (load_configuration_data (PLUGIN_NAME, conf_table)) updater_set_interval (up);
 }
 
-void WidgetUpdater::init (Gtk::HBox *container)
+void WidgetUpdater::widget_init (Gtk::HBox *container)
 {
     /* Create the button */
     plugin = std::make_unique <Gtk::Button> ();
@@ -63,7 +62,6 @@ void WidgetUpdater::init (Gtk::HBox *container)
     /* Setup structure */
     up = g_new0 (UpdaterPlugin, 1);
     up->plugin = (GtkWidget *)((*plugin).gobj());
-    icon_timer = Glib::signal_idle().connect (sigc::mem_fun (*this, &WidgetUpdater::set_icon));
 
     /* Initialise the plugin */
     updater_set_values (up);
@@ -73,7 +71,6 @@ void WidgetUpdater::init (Gtk::HBox *container)
 
 WidgetUpdater::~WidgetUpdater()
 {
-    icon_timer.disconnect ();
     updater_destructor (up);
 }
 

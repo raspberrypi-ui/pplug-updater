@@ -1,3 +1,9 @@
+pplug-updater (1.8) trixie; urgency=medium
+
+  * Modify for latest plugin architecture
+
+ -- Simon Long <simon@raspberrypi.com>  Fri, 07 Aug 2026 10:21:57 +0100
+
 pplug-updater (1.7) trixie; urgency=medium
 
   * Remove WfOptions
