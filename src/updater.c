@@ -28,11 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <locale.h>
 #include <glib/gi18n.h>
 
-#ifdef LXPLUG
 #include "plugin.h"
-#else
-#include "lxutils.h"
-#endif
 
 #include "updater.h"
 
@@ -496,10 +492,8 @@ void updater_init (UpdaterPlugin *up)
 
     /* Set up button */
     gtk_button_set_relief (GTK_BUTTON (up->plugin), GTK_RELIEF_NONE);
-#ifndef LXPLUG
     g_signal_connect (up->plugin, "clicked", G_CALLBACK (updater_button_clicked), up);
-    up->gesture = add_long_press (up->plugin, NULL, NULL);
-#endif
+    wrap_add_longpress (up->gesture, up->plugin, NULL, NULL);
 
     /* Set up variables */
     up->menu = NULL;
@@ -519,9 +513,7 @@ void updater_destructor (gpointer user_data)
 {
     UpdaterPlugin *up = (UpdaterPlugin *) user_data;
 
-#ifndef LXPLUG
-    if (up->gesture) g_object_unref (up->gesture);
-#endif
+    wrap_free_gesture (up->gesture);
 
     up->destroyed = TRUE;
     g_cancellable_cancel (up->cancellable);
@@ -535,94 +527,6 @@ void updater_destructor (gpointer user_data)
         g_free (up);
     }
 }
-
-/*----------------------------------------------------------------------------*/
-/* LXPanel plugin functions                                                   */
-/*----------------------------------------------------------------------------*/
-#ifdef LXPLUG
-
-/* Constructor */
-static GtkWidget *updater_constructor (LXPanel *panel, config_setting_t *settings)
-{
-    /* Allocate and initialize plugin context */
-    UpdaterPlugin *up = g_new0 (UpdaterPlugin, 1);
-
-    /* Allocate top level widget and set into plugin widget pointer. */
-    up->panel = panel;
-    up->settings = settings;
-    up->plugin = gtk_button_new ();
-    lxpanel_plugin_set_data (up->plugin, up, updater_destructor);
-
-    /* Read config */
-    updater_set_values (up);
-    lxplug_read_settings (up->settings, conf_table);
-
-    updater_init (up);
-
-    return up->plugin;
-}
-
-/* Handler for button press */
-static gboolean updater_button_press_event (GtkWidget *plugin, GdkEventButton *event, LXPanel *)
-{
-    UpdaterPlugin *up = lxpanel_plugin_get_data (plugin);
-
-    if (event->button == 1)
-    {
-        updater_button_clicked (plugin, up);
-        return TRUE;
-    }
-    else return FALSE;
-}
-
-/* Handler for system config changed message from panel */
-static void updater_configuration_changed (LXPanel *, GtkWidget *plugin)
-{
-    UpdaterPlugin *up = lxpanel_plugin_get_data (plugin);
-    updater_update_display (up);
-}
-
-/* Handler for control message */
-static gboolean updater_control (GtkWidget *plugin, const char *cmd)
-{
-    UpdaterPlugin *up = lxpanel_plugin_get_data (plugin);
-    return updater_control_msg (up, cmd);
-}
-
-/* Apply changes from config dialog */
-static gboolean updater_apply_configuration (gpointer user_data)
-{
-    UpdaterPlugin *up = lxpanel_plugin_get_data (GTK_WIDGET (user_data));
-
-    lxplug_write_settings (up->settings, conf_table);
-
-    updater_set_interval (up);
-    return FALSE;
-}
-
-/* Display configuration dialog */
-static GtkWidget *updater_configure (LXPanel *panel, GtkWidget *plugin)
-{
-    return lxpanel_generic_config_dlg_new (_(PLUGIN_TITLE), panel,
-        updater_apply_configuration, plugin,
-        conf_table);
-}
-
-int module_lxpanel_gtk_version = 1;
-char module_name[] = PLUGIN_NAME;
-
-/* Plugin descriptor */
-LXPanelPluginInit fm_module_init_lxpanel_gtk = {
-    .name = PLUGIN_TITLE,
-    .description = N_("Checks for updates"),
-    .new_instance = updater_constructor,
-    .reconfigure = updater_configuration_changed,
-    .button_press_event = updater_button_press_event,
-    .config = updater_configure,
-    .control = updater_control,
-    .gettext_package = GETTEXT_PACKAGE
-};
-#endif
 
 /* End of file */
 /*----------------------------------------------------------------------------*/
