@@ -99,6 +99,7 @@ static gboolean net_available (void)
 
 static void check_destroyed (UpdaterPlugin *up)
 {
+    up->reloading = FALSE;
     up->checking = FALSE;
     if (up->destroyed)
     {
@@ -118,6 +119,7 @@ static void check_for_updates (gpointer user_data)
     if (!net_available ())
     {
         DEBUG ("No network connection - update check failed");
+        up->reloading = FALSE;
         return;
     }
 
@@ -226,7 +228,7 @@ static void check_updates_done (PkClient *client, GAsyncResult *res, gpointer da
     {
         DEBUG ("Check complete - %d updates available", up->n_updates);
         up->ids = pk_package_sack_get_ids (fsack);
-        wrap_notify (up->panel, _("Updates are available\nClick the update icon to install"));
+        if (!up->reloading) wrap_notify (up->panel, _("Updates are available\nClick the update icon to install"));
     }
     else
     {
@@ -401,9 +403,6 @@ static gboolean init_check (gpointer data)
     up->idle_timer = 0;
     update_icon (up, TRUE);
 
-    /* Don't bother with the check if the wizard is running - it checks anyway... */
-    if (!system ("ps ax | grep -v grep | grep -q piwiz")) return FALSE;
-
     if (net_available ()) check_for_updates (up);
     else
     {
@@ -503,10 +502,16 @@ void updater_init (UpdaterPlugin *up)
     up->cancellable = g_cancellable_new ();
     up->checking = FALSE;
     up->destroyed = FALSE;
+    up->reloading = reload;
+    up->timer = 0;
+    up->idle_timer = 0;
 
-    /* Start timed events to monitor status */
-    updater_set_interval (up);
-    up->idle_timer = g_idle_add (init_check, up);
+    /* Start timed events to monitor status - don't bother if the wizard is running, as it checks anyway */
+    if (system ("ps ax | grep -v grep | grep -q piwiz"))
+    {
+        updater_set_interval (up);
+        up->idle_timer = g_idle_add (init_check, up);
+    }
 }
 
 void updater_destructor (gpointer user_data)

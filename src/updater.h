@@ -53,6 +53,7 @@ typedef struct
     GCancellable *cancellable;
     gboolean checking;
     gboolean destroyed;
+    gboolean reloading;
 } UpdaterPlugin;
 
 extern conf_table_t conf_table[2];
