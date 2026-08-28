@@ -64,20 +64,11 @@ static void updater_configuration_changed (LXPanel *, GtkWidget *plugin)
     updater_update_display (up);
 }
 
-/* Handler for control message */
-static gboolean updater_control (GtkWidget *plugin, const char *cmd)
-{
-    UpdaterPlugin *up = lxpanel_plugin_get_data (plugin);
-    return updater_control_msg (up, cmd);
-}
-
 /* Apply changes from config dialog */
 static gboolean updater_apply_configuration (gpointer user_data)
 {
     UpdaterPlugin *up = lxpanel_plugin_get_data (GTK_WIDGET (user_data));
-
     lxplug_write_settings (up->settings, conf_table);
-
     updater_set_interval (up);
     return FALSE;
 }
@@ -90,20 +81,26 @@ static GtkWidget *updater_configure (LXPanel *panel, GtkWidget *plugin)
         conf_table);
 }
 
+/* Handler for control message */
+static gboolean updater_control (GtkWidget *plugin, const char *cmd)
+{
+    UpdaterPlugin *up = lxpanel_plugin_get_data (plugin);
+    return updater_control_msg (up, cmd);
+}
+
 int module_lxpanel_gtk_version = 1;
 char module_name[] = PLUGIN_NAME;
 
 /* Plugin descriptor */
 LXPanelPluginInit fm_module_init_lxpanel_gtk = {
     .name = PLUGIN_TITLE,
+    .gettext_package = GETTEXT_PACKAGE,
     .description = N_("Checks for updates"),
     .new_instance = updater_constructor,
     .reconfigure = updater_configuration_changed,
     .config = updater_configure,
-    .control = updater_control,
-    .gettext_package = GETTEXT_PACKAGE
+    .control = updater_control
 };
-
 
 /* End of file */
 /*----------------------------------------------------------------------------*/
