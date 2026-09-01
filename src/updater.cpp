@@ -37,11 +37,6 @@ extern "C" {
     const char *package_name (void) { return GETTEXT_PACKAGE; };
 }
 
-void WidgetUpdater::widget_command (const char *cmd)
-{
-    updater_control_msg (up, cmd);
-}
-
 void WidgetUpdater::widget_set_icon (void)
 {
     updater_update_display (up);
@@ -50,6 +45,11 @@ void WidgetUpdater::widget_set_icon (void)
 void WidgetUpdater::widget_config_reload (void)
 {
     if (load_configuration_data (PLUGIN_NAME, conf_table)) updater_set_interval (up);
+}
+
+void WidgetUpdater::widget_command (const char *cmd)
+{
+    updater_control_msg (up, cmd);
 }
 
 void WidgetUpdater::widget_init (Gtk::HBox *container)

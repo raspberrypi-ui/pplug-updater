@@ -46,9 +46,9 @@ class WidgetUpdater : public PanelWidget
 
     void widget_init (Gtk::HBox *container) override;
     virtual ~WidgetUpdater ();
-    void widget_command (const char *cmd) override;
     void widget_set_icon (void);
     void widget_config_reload (void);
+    void widget_command (const char *cmd) override;
 };
 
 #endif /* end of include guard: WIDGETS_UPDATER_HPP */
