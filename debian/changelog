@@ -1,3 +1,9 @@
+pplug-updater (1.12) trixie; urgency=medium
+
+  * Add tooltip for widget browser
+
+ -- Simon Long <simon@raspberrypi.com>  Mon, 21 Sep 2026 09:45:24 +0100
+
 pplug-updater (1.11) trixie; urgency=medium
 
   * Version bump for build
