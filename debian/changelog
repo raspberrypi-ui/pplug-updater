@@ -1,3 +1,9 @@
+pplug-updater (1.13) trixie; urgency=medium
+
+  * Fix for amd64
+
+ -- Simon Long <simon@raspberrypi.com>  Tue, 13 Oct 2026 11:28:38 +0100
+
 pplug-updater (1.12) trixie; urgency=medium
 
   * Add tooltip for widget browser
