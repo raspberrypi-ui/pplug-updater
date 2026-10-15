@@ -67,7 +67,6 @@ static void check_for_updates (gpointer user_data);
 static gpointer refresh_update_cache (gpointer data);
 static void refresh_cache_done (PkTask *task, GAsyncResult *res, gpointer data);
 static gboolean filter_fn (PkPackage *package, gpointer user_data);
-static gboolean filter_fn_x86 (PkPackage *package, gpointer);
 static void check_updates_done (PkClient *client, GAsyncResult *res, gpointer data);
 static void install_updates (GtkWidget *widget, gpointer user_data);
 static void launch_installer (void);
@@ -176,19 +175,12 @@ static gboolean filter_fn (PkPackage *package, gpointer)
         case PK_INFO_ENUM_IMPORTANT:
         case PK_INFO_ENUM_SECURITY:
         case PK_INFO_ENUM_BUGFIX:
-        case PK_INFO_ENUM_ENHANCEMENT:
-        case PK_INFO_ENUM_BLOCKED:      return TRUE;
+        case PK_INFO_ENUM_ENHANCEMENT:  return TRUE;
                                         break;
 
         default:                        return FALSE;
                                         break;
     }
-}
-
-static gboolean filter_fn_x86 (PkPackage *package, gpointer)
-{
-    if (strstr (pk_package_get_arch (package), "i386")) return FALSE;
-    return filter_fn (package, NULL);
 }
 
 static void check_updates_done (PkClient *client, GAsyncResult *res, gpointer data)
@@ -217,10 +209,7 @@ static void check_updates_done (PkClient *client, GAsyncResult *res, gpointer da
     }
 
     sack = pk_results_get_package_sack (results);
-    if (system ("raspi-config nonint is_pi"))
-        fsack = pk_package_sack_filter (sack, filter_fn_x86, data);
-    else
-        fsack = pk_package_sack_filter (sack, filter_fn, data);
+    fsack = pk_package_sack_filter (sack, filter_fn, data);
 
     up->n_updates = pk_package_sack_get_size (fsack);
     if (up->ids != NULL) g_strfreev (up->ids);
