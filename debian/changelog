@@ -1,3 +1,9 @@
+pplug-updater (1.14) trixie; urgency=medium
+
+  * No architecture filter; don't update blocked packages
+
+ -- Simon Long <simon@raspberrypi.com>  Fri, 16 Oct 2026 16:17:52 +0100
+
 pplug-updater (1.13) trixie; urgency=medium
 
   * Fix for amd64
