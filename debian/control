@@ -14,14 +14,14 @@ Homepage: http://raspberrypi.com/
 Package: lpplug-updater
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
- pplug-updater-data, raspi-config, gui-updater
+ pplug-updater-data, gui-updater
 Description: Updater plugin for lxpanel-pi
  Plugin for lxpanel-pi to check for and install updates.
 
 Package: wfplug-updater
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
- pplug-updater-data, raspi-config, gui-updater
+ pplug-updater-data, gui-updater
 Description: Updater plugin for wf-panel-pi
  Plugin for wf-panel-pi to check for and install updates.
 
